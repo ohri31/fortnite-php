@@ -15,5 +15,5 @@
     },
     "scripts": {
         "test": "php tests/auth.php"
-    }   
+    }
 }
