@@ -1,18 +1,12 @@
 # Fortnite-PHP Wrapper
 Interact with the official Fortnite API using PHP.
 
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
+[![Packagist](https://img.shields.io/packagist/v/Tustin/fortnite-php.svg)]()
+
 ## Installation
-Add this to your composer.json:
-```{
-    "require": {
-        "tustin/fortnite-php": "dev-master"
-    },
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/TimVerheul/fortnite-php"
-    }]
-}
-```
+Pull in the project using composer:
+`composer require Tustin/fortnite-php`
 
 ## Usage
 Create a basic test script to ensure everything was installed properly
@@ -22,26 +16,63 @@ Create a basic test script to ensure everything was installed properly
 require_once 'vendor/autoload.php';
 
 use Fortnite\Auth;
+use Fortnite\Account;
+use Fortnite\Mode;
+use Fortnite\Language;
+use Fortnite\Platform;
 
-$auth = Auth::login('email@email.email', 'password');
+// Authenticate
+$auth = Auth::login('epic_email@domain.com','password');
 
-$i = 1;
-foreach ($auth->store->get()->storefronts as $data) {
-    if (isset($data->catalogEntries[0]->title)) {
-        if (strpos($data->catalogEntries[0]->title, 'Llama') !== false) {
-            if ($i > 1) {
-                echo $data->catalogEntries[0]->title . "\n";
-                echo $data->catalogEntries[0]->prices[0]->finalPrice . " Vbucks ";
-                echo "[ Limit: " . $data->catalogEntries[0]->dailyLimit . " ]\n";
-                echo $data->catalogEntries[0]->description . "\n\n";
-            } else { }
-            $i++;
-        }
-    }
-}
+// Output each stat for all applicable platforms
+var_dump($auth->profile->stats);
+
+// Grab someone's stats
+$sandy = $auth->profile->stats->lookup('sandalzrevenge');
+echo 'Sandy Ravage has won ' . $sandy->pc->solo->wins . ' solo games and ' . $sandy->pc->squad->wins . ' squad games!';
 ```
 
+### Get Leaderboards
+```php
+$auth = Auth::login('epic_email@domain.com','password');
+var_dump($auth->leaderboard->get(Platform::PC, Mode::DUO)); 
+
 ```
-Try out your own way to get the data, or use my bot ;)
-https://fortnite.tchverheul.nl/
+
+### Get News 
+```php
+$auth = Auth::login('epic_email@domain.com','password');
+var_dump($auth->news->get(News::BATTLEROYALE, Language::ENGLISH)); 
 ```
+
+
+
+### Get Store
+```php
+$auth = Auth::login('epic_email@domain.com','password');
+var_dump($auth->store->get(Language::ENGLISH)); 
+```
+
+### Get Challenges
+```php
+$auth = Auth::login('epic_email@domain.com','password');
+// All weekly challenges
+var_dump($auth->profile->challenges->getWeeklys()); 
+
+// Or just get a specific week (in this example, week 1)
+var_dump($auth->profile->challenges->getWeekly(1)); 
+```
+
+### Constants
+```
+Platform [ PC, PS4, XB1 ]
+
+Mode [ SOLO, DUO, SQUAD ]
+
+Language [ ENGLISH, GERMAN, SPANISH, CHINESE, FRENCH, ITALIAN, JAPANESE ]
+
+News [ BATTLEROYALE, SAVETHEWORLD ]
+```
+
+## Contributing
+Fortnite now utilizes SSL certificate pinning in their Windows client in newer versions. I suggest using the iOS mobile app to do any future API reversing as both cheat protections on the Windows client make it difficult to remove the certificate pinning. If SSL certificate pinning is added to the iOS version, I could easily provide a patch to remove that as the iOS version doesn't contain any anti-cheat.
