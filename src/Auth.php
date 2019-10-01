@@ -136,6 +136,8 @@ class Auth
      */
     public static function refresh($refresh_token)
     {
+        $client = new Client(['cookies' => true]);
+        
         $data = FortniteClient::sendUnrealClientPostRequest($client, FortniteClient::EPIC_OAUTH_TOKEN_ENDPOINT, [
             'grant_type' => 'refresh_token',
             'refresh_token' => $refresh_token,
