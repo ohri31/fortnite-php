@@ -208,8 +208,10 @@ class FortniteClient
         }
     }
 
-    public static function sendFortniteDeleteRequest($endpoint, $access_token)
+    public static function sendFortniteDeleteRequest($endpoint, $access_token, $params = null)
     {
+        $client = new Client();
+
         try {
             $response = $client->delete($endpoint, [
                 'json' => $params,

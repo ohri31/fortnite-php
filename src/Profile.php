@@ -44,8 +44,30 @@ class Profile {
      * @return array    Array of friends
      */
     public function getFriends() {
-        $data = FortniteClient::sendUnrealClientGetRequest(FortniteClient::EPIC_FRIENDS_ENDPOINT . $this->account_id, $this->access_token, true);
+        $data = FortniteClient::sendFortniteGetRequest(FortniteClient::EPIC_FRIENDS_ENDPOINT . $this->account_id, $this->access_token);
 
+        return $data;
+    }
+
+    /**
+     * Add a friend on Unreal Engine.
+     * @param string    ID of friend to remove
+     */
+    public function addFriend($id) {
+        $data = FortniteClient::sendFortnitePostRequest(FortniteClient::EPIC_FRIENDS_ENDPOINT . $this->account_id . '/' . $id,
+                                                        $this->access_token,
+                                                        new \StdClass());
+        return $data;
+    }
+
+    /**
+     * Remove a friend or decline or stop a friend request on Unreal Engine.
+     * @param string    ID of friend to remove
+     */
+    public function removeFriend($id) {
+        $data = FortniteClient::sendFortniteDeleteRequest(FortniteClient::EPIC_FRIENDS_ENDPOINT . $this->account_id . '/' . $id,
+                                                        $this->access_token,
+                                                        new \StdClass());
         return $data;
     }
 }
