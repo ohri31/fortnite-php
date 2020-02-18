@@ -59,7 +59,6 @@ class Auth
      */
     public static function login($email, $password, $challenge = '', $code = '')
     {
-
         $requestParams = [
             'includePerms' => 'false', // We don't need these here
             'token_type' => 'eg1'
@@ -85,7 +84,12 @@ class Auth
 
         $dataToken = FortniteClient::sendUnrealXSRFClientPostRequest($client);
 
-        $data = FortniteClient::sendUnrealClientLoginRequestPostRequest($client, $dataToken, $email, $password);
+        try {
+            $data = FortniteClient::sendUnrealClientLoginRequestPostRequest($client, $dataToken, $email, $password);
+        } catch(\Exception $e) {
+            $dataToken = FortniteClient::sendUnrealXSRFClientPostRequest($client);
+			$data = FortniteClient::sendUnrealClientLoginRequestPostRequest($client, $dataToken, $email, $password);	
+        }
 
         $dataParam = FortniteClient::sendUnrealClientExchangePostRequest($client, $dataToken);
 
