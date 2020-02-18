@@ -73,7 +73,7 @@ class Stats {
             // return te platforms data
             return $platforms;
         } catch(\Exception $e) {
-            throw new UserNotFoundException("Unable to find the stats for this user.");
+            throw new UserNotFoundException("Unable to find the stats for this user. Check if the account is connected properly.");
         } 
     }
 
