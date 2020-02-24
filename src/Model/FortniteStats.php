@@ -16,6 +16,7 @@ class FortniteStats
     public $kills = 0;
     public $matches_played = 0;
     public $minutes_played = 0;
+    public $players_outlived = 0;
     public $score = 0;
     public $kills_per_match = 0;
     public $score_per_match = 0;
@@ -63,6 +64,9 @@ class FortniteStats
                 break;
                 case "minutesplayed":
                 $this->minutes_played = $value;
+                break;
+                case "playersoutlived":
+                $this->players_outlived = $value;
                 break;
                 case "lastmodified":
                 $this->last_modified = $value;

@@ -5,9 +5,9 @@ use Fortnite\Exception\InvalidGameModeException;
 use Fortnite\Model\FortniteStats;
 
 class Platform { 
-    public const PC = "pc";
-    public const XBOX1 = "xb1";
-    public const PS4 = "ps4";
+    public const GAMEPAD = "gamepad";
+    public const TOUCH = "touch";
+    public const KEYBOARDMOUSE = "keyboardmouse";
 
     public $solo;
     public $duo;
@@ -16,13 +16,13 @@ class Platform {
     public function __construct($platform) {
         foreach ($platform as $key => $mode) {
             switch ($key) {
-                case "p2":
+                case "solo":
                 $this->solo = new FortniteStats($mode);
                 break;
-                case "p9":
+                case "squad":
                 $this->squad = new FortniteStats($mode);
                 break;
-                case "p10":
+                case "duo":
                 $this->duo = new FortniteStats($mode);
                 break;
                 default:

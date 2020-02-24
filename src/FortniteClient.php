@@ -17,15 +17,14 @@ class FortniteClient
     /**
      * base64 encoded string of two MD5 hashes delimited by a colon. The two hashes are the client_id and client_secret OAuth2 fields.
      */
-    const EPIC_LAUNCHER_AUTHORIZATION   = "MzQ0NmNkNzI2OTRjNGE0NDg1ZDgxYjc3YWRiYjIxNDE6OTIwOWQ0YTVlMjVhNDU3ZmI5YjA3NDg5ZDMxM2I0MWE=";
-
+    //const EPIC_LAUNCHER_AUTHORIZATION   = "MzQ0NmNkNzI2OTRjNGE0NDg1ZDgxYjc3YWRiYjIxNDE6OTIwOWQ0YTVlMjVhNDU3ZmI5YjA3NDg5ZDMxM2I0MWE=";
+    const EPIC_LAUNCHER_AUTHORIZATION = "MzRhMDJjZjhmNDQxNGUyOWIxNTkyMTg3NmRhMzZmOWE6ZGFhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=";
 
     /**
      * Same as EPIC_LAUNCHER_AUTHORIZATION
      */
-    const FORTNITE_AUTHORIZATION        = "ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ=";
-
-
+    //const FORTNITE_AUTHORIZATION        = "ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ=";
+    const FORTNITE_AUTHORIZATION = "ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ=";
 
     /**
      * Epic API Endpoints
@@ -44,12 +43,11 @@ class FortniteClient
     const FORTNITE_NEWS_API             = "https://fortnitecontent-website-prod07.ol.epicgames.com/content/api/";
     const FORTNITE_STATUS_API           = "https://lightswitch-public-service-prod06.ol.epicgames.com/lightswitch/api/";
     const FORTNITE_EULA_API             = "https://eulatracking-public-service-prod-m.ol.epicgames.com/eulatracking/api/";
+    CONST FORTNITE_STATS_API            = "https://statsproxy-public-service-live.ol.epicgames.com/statsproxy/api/statsv2/account/";
 
 
     const UNREAL_CLIENT_USER_AGENT      = "game=UELauncher, engine=UE4, build=7.14.2-4231683+++Portal+Release-Live";
     const FORTNITE_USER_AGENT           = "Fortnite/++Fortnite+Release-7.01-CL-4644078 IOS/11.3.1";
-
-
 
     /**
      * Sends a GET request as the Unreal Engine Client.
@@ -97,7 +95,7 @@ class FortniteClient
                 'form_params' => [
                     'email' => $email,
                     'password' => $password,
-                    'rememberMe' => 'false',
+                    'rememberMe' => 'true',
                     'captcha' => ''
                 ],
                 'headers' => [
@@ -108,7 +106,15 @@ class FortniteClient
 
             return json_decode($response->getBody()->getContents());
         } catch (GuzzleException $e) {
-            throw $e; //Throw exception back up to caller
+            /*$statusCode = $e->getCode();
+
+            if($statusCode == 400) {
+                return json_decode($e->getResponse()->getBody()->getContents());
+            } else {
+                throw $e; 
+            } */
+
+            throw $e;
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace Fortnite;
 
+use Fortnite\Stats;
 use Fortnite\Status;
 use Fortnite\Profile;
 use GuzzleHttp\Client;
@@ -17,8 +18,7 @@ class Auth
     private $expires_in;
 
     public $profile;
-
-
+    public $stats;
 
     // TODO: Probably want to lazy load all of these object initializations. Although currently I'm not sure how to go about that with PHP.
     // @Tustin 7/28/2018
@@ -36,15 +36,22 @@ class Auth
         $this->refresh_token = $refresh_token;
         $this->account_id = $account_id;
         $this->expires_in = $expires_in;
+
         $this->account = new Account($this->access_token, $this->account_id);
         $this->status = new Status($this->access_token);
+        $this->stats = new Stats($this->access_token);
+
         if ($this->status->allowedToPlay() === false) {
             $this->account->acceptEULA();
         }
-        $this->profile = new Profile($this->access_token, $this->account_id);
-        $this->leaderboard  = new Leaderboard($this->access_token, $this->in_app_id, $this->account);
-        $this->store = new Store($this->access_token);
-        $this->news = new News($this->access_token);
+        
+        /**
+         * If you need the profile, leaderborad, store etc. just torun on
+         */
+        //$this->profile = new Profile($this->access_token, $this->account_id);
+        //$this->leaderboard  = new Leaderboard($this->access_token, $this->in_app_id, $this->account);
+        //$this->store = new Store($this->access_token);
+        //$this->news = new News($this->access_token);
     }
 
     /**
@@ -86,9 +93,9 @@ class Auth
 
         try {
             $data = FortniteClient::sendUnrealClientLoginRequestPostRequest($client, $dataToken, $email, $password);
-        } catch(\Exception $e) {
+        } catch(\Exception $e) {    
             $dataToken = FortniteClient::sendUnrealXSRFClientPostRequest($client);
-			$data = FortniteClient::sendUnrealClientLoginRequestPostRequest($client, $dataToken, $email, $password);	
+            $data = FortniteClient::sendUnrealClientLoginRequestPostRequest($client, $dataToken, $email, $password);
         }
 
         $dataParam = FortniteClient::sendUnrealClientExchangePostRequest($client, $dataToken);
@@ -157,6 +164,15 @@ class Auth
     }
 
     /**
+     * Return if there is a valid access toke n
+     *
+     */
+    public static function access($token, $refresh_token, $account_id, $expires_in) 
+    {
+        return new self($token, null, $refresh_token, $account_id, $expires_in);
+    }
+
+    /**
      * Returns current refresh token.
      * @return string OAuth2 refresh token
      */
@@ -188,3 +204,4 @@ class Auth
         return $this->in_app_id;
     }
 }
+
