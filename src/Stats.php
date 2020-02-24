@@ -99,15 +99,23 @@ class Stats {
     }
 
     /**
-     * Lookup by the User account ID 
+     * Lookup by the User nickname 
      *
-     * @param string $account_id 
+     * @param string $nickname
      */
-    public function lookup($account_id) 
+    public function lookup($nickname) 
     {
+        try {
+            $endpoint = FortniteClient::FORTNITE_PERSONA_API . 'public/account/displayName/' . $nickname;
+            $data = FortniteClient::sendFortniteGetRequest($endpoint, $this->access_token);
+        } catch(\Exception $e) {
+            throw new UserNotFoundException("Cannot find user. Check if the  nickname correct.");
+        }
+
         return new self(
             $this->access_token, 
-            $account_id
+            $data->id,
+            $this->display_name = $nickname
         );
     }
 
@@ -167,39 +175,4 @@ class Stats {
             'value' => $value
         ];
     }
-
-    /** 
-     * NOTE (18/02/2020): 
-     *
-     * The Lookup API Endpoint got deprecated in 02/20 - so that one can't be used any more. 
-     * The Fetch stats was expanded in order to cover the correspoding exceptions * 
-     */
-
-    /**
-     * Lookup a user by their Epic display name.
-     * @param  string $username Display name to search
-     * @return object           New instance of Fortnite\Stats
-     */
-    /* public function lookup($username) {
-        try {
-            $data = FortniteClient::sendFortniteGetRequest(FortniteClient::FORTNITE_PERSONA_API . 'public/account/lookup?q=' . urlencode($username),
-                                                        $this->access_token);
-            return new self($this->access_token, $data->id);
-        } catch (GuzzleException $e) {
-            if ($e->getResponse()->getStatusCode() == 404) throw new UserNotFoundException('User ' . $username . ' was not found.');
-            throw $e; //If we didn't get the user not found status code, just re-throw the error.
-        }
-    }
-
-    //TODO (Tustin): Make this not redundant
-    public static function lookupWithToken($username, $access_token) {
-        try {
-            $data = FortniteClient::sendFortniteGetRequest(FortniteClient::FORTNITE_PERSONA_API . 'public/account/lookup?q=' . urlencode($username),
-                                                        $access_token);
-            return new self($access_token, $data->id);
-        } catch (GuzzleException $e) {
-            if ($e->getResponse()->getStatusCode() == 404) throw new UserNotFoundException('User ' . $username . ' was not found.');
-            throw $e; //If we didn't get the user not found status code, just re-throw the error.
-        }
-    } */
 }
