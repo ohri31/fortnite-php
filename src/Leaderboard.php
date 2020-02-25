@@ -31,7 +31,7 @@ class Leaderboard
      * Get leaderboard 
      * @param  string $platform (keyboardmouse, gamepad, touch)
      * @param  string $type (SOLO, DUO, SQUAD)
-     * @param  int    $limit
+     * @param  int    $limit Max = 1000
      * @return object New instance of Fortnite\Leaderboard
      */
     public function get($platform, $type, $limit=10)
@@ -54,7 +54,8 @@ class Leaderboard
             $data_cohort = FortniteClient::sendFortniteGetRequest(FortniteClient::FORTNITE_LEADERBOARD_API . 
                 "br_placetop1_{$platform}_m0_playlist_{$type}", $this->access_token);
             $entries = $data_cohort->entries;
-
+            $entries = array_slice($entries, 0, $limit);
+            
             $ids = array();
             foreach ($entries as $key => $entry) {
                 if ($key >= $limit)

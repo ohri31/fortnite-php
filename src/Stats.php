@@ -143,17 +143,17 @@ class Stats {
         $platform = $pieces[2]; // either gamepad or touch
         $gamemode = $splitted[1]; // fetch the wole 
         
-        if(!in_array($gamemode, self::SOLO_MODES) && !in_array($gamemode, self::DUO_MODES) && !in_array($gamemode, self::SQUAD_MODES)) {
+        if(!in_array($gamemode, Mode::SOLO_MODES) && !in_array($gamemode, Mode::DUO_MODES) && !in_array($gamemode, Mode::SQUAD_MODES)) {
             return [];
         }
 
         $mode = "";
 
         switch($gamemode) {
-            case in_array($gamemode, self::DUO_MODES):
+            case in_array($gamemode, Mode::DUO_MODES):
                 $mode = "duo";
                 break;
-            case in_array($gamemode, self::SQUAD_MODES):
+            case in_array($gamemode, Mode::SQUAD_MODES):
                 $mode = "squad";
                 break;
             default:

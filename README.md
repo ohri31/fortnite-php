@@ -29,7 +29,14 @@ var_dump($auth->stats);
 
 // Grab someone's stats
 $sandy = $auth->stats->lookup('sandalzrevenge');
-s
+var_dump($auth->stats);
+
+// Grab leaderboard
+// Select top 15 players by score for PC and default Solo mode with
+$leaderboard = $auth->leaderboard->get(Platform::KEYBOARDMOUSE, Mode::SOLO_MODES[0], 15);
+var_dump($leaderboard);
+
+
 ```
 
 
