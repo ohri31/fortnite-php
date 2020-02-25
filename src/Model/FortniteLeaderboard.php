@@ -19,7 +19,7 @@ class FortniteLeaderboard {
                 case "rank":
                     $this->rank = $value;
                     break;
-                case "accountId":
+                case "account":
                     $this->accountid = $value;
                     break;
                 case "value":

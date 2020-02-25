@@ -44,7 +44,7 @@ class FortniteClient
     const FORTNITE_STATUS_API           = "https://lightswitch-public-service-prod06.ol.epicgames.com/lightswitch/api/";
     const FORTNITE_EULA_API             = "https://eulatracking-public-service-prod-m.ol.epicgames.com/eulatracking/api/";
     CONST FORTNITE_STATS_API            = "https://statsproxy-public-service-live.ol.epicgames.com/statsproxy/api/statsv2/account/";
-
+    const FORTNITE_LEADERBOARD_API      = "https://statsproxy-public-service-live.ol.epicgames.com/statsproxy/api/statsv2/leaderboards/";
 
     const UNREAL_CLIENT_USER_AGENT      = "game=UELauncher, engine=UE4, build=7.14.2-4231683+++Portal+Release-Live";
     const FORTNITE_USER_AGENT           = "Fortnite/++Fortnite+Release-7.01-CL-4644078 IOS/11.3.1";
