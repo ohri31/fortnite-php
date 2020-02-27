@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class News
 {
+    // TODO: Add more types
     const BATTLEROYALE = "battleroyalenews";
     const SAVETHEWORLD = "savetheworldnews";
 
@@ -22,6 +23,7 @@ class News
 
     public function get($type, $lang = Language::ENGLISH)
     {
+        // TODO: do something with that
         if ($lang !== Language::ENGLISH
             && $lang !== Language::GERMAN
             && $lang !== Language::SPANISH
@@ -52,6 +54,4 @@ class News
             throw $e;
         }
     }
-
-
 }

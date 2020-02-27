@@ -3,6 +3,7 @@ namespace Fortnite;
 
 class Language 
 {
+    // TODO: Add more languages
     const ENGLISH = "en";
     const GERMAN = "de";
     const SPANISH = "es";

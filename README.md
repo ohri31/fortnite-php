@@ -29,16 +29,21 @@ var_dump($auth->stats);
 
 // Grab someone's stats
 $sandy = $auth->stats->lookup('sandalzrevenge');
-var_dump($auth->stats);
+echo 'Sandy Ravage has won ' . $sandy->keyboardmouse->solo->wins . ' solo games and ' . $sandy->pc->squad->wins . ' squad games!';
+```
 
-// Grab leaderboard
-// Select top 15 players by score for PC and default Solo mode with
-$leaderboard = $auth->leaderboard->get(Platform::KEYBOARDMOUSE, Mode::SOLO_MODES[0], 15);
-var_dump($leaderboard);
-
+### Get Leaderboards
+```php
+$auth = Auth::login('epic_email@domain.com','password');
+var_dump($auth->leaderboard->get(Platform::KEYBOARDMOUSE, Mode::DUO[0])); 
 
 ```
 
+### Get News 
+```php
+$auth = Auth::login('epic_email@domain.com','password');
+var_dump($auth->news->get(News::BATTLEROYALE, Language::ENGLISH)); 
+```
 
 ## Contributing
 Fortnite now utilizes SSL certificate pinning in their Windows client in newer versions. I suggest using the iOS mobile app to do any future API reversing as both cheat protections on the Windows client make it difficult to remove the certificate pinning. If SSL certificate pinning is added to the iOS version, I could easily provide a patch to remove that as the iOS version doesn't contain any anti-cheat.
