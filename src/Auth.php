@@ -191,6 +191,7 @@ class Auth
             $token, 
             null, 
             $refresh_token,
+            $account_id,
             21600,
             86400
         );
