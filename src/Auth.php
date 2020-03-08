@@ -191,8 +191,8 @@ class Auth
             $token, 
             null, 
             $refresh_token,
-            $this->expires_in,
-            $this->refresh_expires_in
+            21600,
+            86400
         );
     }
 
