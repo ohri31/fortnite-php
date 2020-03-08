@@ -16,6 +16,7 @@ class Auth
     private $refresh_token;
     private $account_id;
     private $expires_in;
+    private $refresh_expires_in;
 
     public $profile;
     public $stats;
@@ -29,13 +30,14 @@ class Auth
      * @param string $account_id    Unreal Engine account id
      * @param string $expires_in    OAuth2 token expiration time
      */
-    private function __construct($access_token, $in_app_id, $refresh_token, $account_id, $expires_in)
+    private function __construct($access_token, $in_app_id, $refresh_token, $account_id, $expires_in, $refresh_expires_in)
     {
         $this->access_token = $access_token;
         $this->in_app_id = $in_app_id;
         $this->refresh_token = $refresh_token;
         $this->account_id = $account_id;
         $this->expires_in = $expires_in;
+        $this->refresh_expires_in = $refresh_expires_in;
 
         $this->account = new Account($this->access_token, $this->account_id);
         $this->status = new Status($this->access_token);
@@ -137,7 +139,14 @@ class Auth
             throw new \Exception($data->errorMessage);
         }
 
-        return new self($data->access_token, $data->in_app_id, $data->refresh_token, $data->account_id, $data->expires_in);
+        return new self(
+            $data->access_token, 
+            $data->in_app_id, 
+            $data->refresh_token, 
+            $data->account_id, 
+            $data->expires_in,
+            $data->refresh_expires
+        );
     }
 
     /**
@@ -160,16 +169,31 @@ class Auth
             throw new \Exception($data->errorMessage);
         }
 
-        return new self($data->access_token, $data->in_app_id, $data->refresh_token, $data->account_id, $data->expires_in);
+        \Log::info(print_r($data, true));
+
+        return new self(
+            $data->access_token, 
+            $data->in_app_id, 
+            $data->refresh_token, 
+            $data->account_id, 
+            $data->expires_in,
+            $data->refresh_expires
+        );
     }
 
     /**
      * Return if there is a valid access toke n
      *
      */
-    public static function access($token, $refresh_token, $account_id, $expires_in) 
+    public static function access($token, $refresh_token, $account_id) 
     {
-        return new self($token, null, $refresh_token, $account_id, $expires_in);
+        return new self(
+            $token, 
+            null, 
+            $refresh_token,
+            $this->expires_in,
+            $this->refresh_expires_in
+        );
     }
 
     /**
@@ -188,6 +212,15 @@ class Auth
     public function expiresIn()
     {
         return $this->expires_in;
+    }
+
+    /**
+     * Returns the time until the OAuth2 refresh token expires.
+     * @return strng Time until Oauth2 refresh token epxires 
+     */
+    public function refreshExpiresIn()
+    {
+        return $this->refresh_expires_in;
     }
 
     /**
