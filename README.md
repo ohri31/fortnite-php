@@ -25,17 +25,17 @@ use Fortnite\Platform;
 $auth = Auth::login('epic_email@domain.com','password');
 
 // Output each stat for all applicable platforms
-var_dump($auth->profile->stats);
+var_dump($auth->stats);
 
 // Grab someone's stats
-$sandy = $auth->profile->stats->lookup('sandalzrevenge');
-echo 'Sandy Ravage has won ' . $sandy->pc->solo->wins . ' solo games and ' . $sandy->pc->squad->wins . ' squad games!';
+$sandy = $auth->stats->lookup('sandalzrevenge');
+echo 'Sandy Ravage has won ' . $sandy->keyboardmouse->solo->wins . ' solo games and ' . $sandy->pc->squad->wins . ' squad games!';
 ```
 
 ### Get Leaderboards
 ```php
 $auth = Auth::login('epic_email@domain.com','password');
-var_dump($auth->leaderboard->get(Platform::PC, Mode::DUO)); 
+var_dump($auth->leaderboard->get(Platform::KEYBOARDMOUSE, Mode::DUO[0])); 
 
 ```
 
@@ -43,35 +43,6 @@ var_dump($auth->leaderboard->get(Platform::PC, Mode::DUO));
 ```php
 $auth = Auth::login('epic_email@domain.com','password');
 var_dump($auth->news->get(News::BATTLEROYALE, Language::ENGLISH)); 
-```
-
-
-
-### Get Store
-```php
-$auth = Auth::login('epic_email@domain.com','password');
-var_dump($auth->store->get(Language::ENGLISH)); 
-```
-
-### Get Challenges
-```php
-$auth = Auth::login('epic_email@domain.com','password');
-// All weekly challenges
-var_dump($auth->profile->challenges->getWeeklys()); 
-
-// Or just get a specific week (in this example, week 1)
-var_dump($auth->profile->challenges->getWeekly(1)); 
-```
-
-### Constants
-```
-Platform [ PC, PS4, XB1 ]
-
-Mode [ SOLO, DUO, SQUAD ]
-
-Language [ ENGLISH, GERMAN, SPANISH, CHINESE, FRENCH, ITALIAN, JAPANESE ]
-
-News [ BATTLEROYALE, SAVETHEWORLD ]
 ```
 
 ## Contributing

@@ -51,9 +51,9 @@ class Auth
          * If you need the profile, leaderborad, store etc. just torun on
          */
         //$this->profile = new Profile($this->access_token, $this->account_id);
-        //$this->leaderboard  = new Leaderboard($this->access_token, $this->in_app_id, $this->account);
+        $this->leaderboard  = new Leaderboard($this->access_token, $this->in_app_id, $this->account);
         //$this->store = new Store($this->access_token);
-        //$this->news = new News($this->access_token);
+        $this->news = new News($this->access_token);
     }
 
     /**

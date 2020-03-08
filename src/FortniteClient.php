@@ -38,13 +38,13 @@ class FortniteClient
      * Fortnite API Endpoints
      */
     const FORTNITE_API                  = "https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/";
-    const FORTNITE_PERSONA_API          = "https://persona-public-service-prod06.ol.epicgames.com/persona/api/";
+    const FORTNITE_PERSONA_API          = "https://account-public-service-prod.ol.epicgames.com/account/api/";
     const FORTNITE_ACCOUNT_API          = "https://account-public-service-prod03.ol.epicgames.com/account/api/";
     const FORTNITE_NEWS_API             = "https://fortnitecontent-website-prod07.ol.epicgames.com/content/api/";
     const FORTNITE_STATUS_API           = "https://lightswitch-public-service-prod06.ol.epicgames.com/lightswitch/api/";
     const FORTNITE_EULA_API             = "https://eulatracking-public-service-prod-m.ol.epicgames.com/eulatracking/api/";
     CONST FORTNITE_STATS_API            = "https://statsproxy-public-service-live.ol.epicgames.com/statsproxy/api/statsv2/account/";
-
+    const FORTNITE_LEADERBOARD_API      = "https://statsproxy-public-service-live.ol.epicgames.com/statsproxy/api/statsv2/leaderboards/";
 
     const UNREAL_CLIENT_USER_AGENT      = "game=UELauncher, engine=UE4, build=7.14.2-4231683+++Portal+Release-Live";
     const FORTNITE_USER_AGENT           = "Fortnite/++Fortnite+Release-7.01-CL-4644078 IOS/11.3.1";

@@ -20,10 +20,6 @@ class Stats {
     public $gamepad;
     public $touch;
     
-    CONST SOLO_MODES = ["defaultsolo", "slide_solo", "bots_defaultsolo", "highexplosives_solo", "slide_solo", "deimos_solo_winter", "showdownalt_solo", "sneaky_solo", "flyexplosives_solo", "snipers_solo", "comp_solo", "ww_solo", "bounty_solo", "low_solo", "goose_solo_24", "blitz_solo", "close_solo", "bling_solo"];
-    CONST DUO_MODES = ["defaultduo", "defaultduos", "bots_defaultduo", "bots_defaultduos", "highexplosives_duos", "slide_duos", "demios_duos_winter", "shutdownalt_duos", "sneaky_duos", "flyexplosives_duos", "snipers_duos", "comp_duos", "ww_duos", "bounty_duos", "low_duos", "goose_duos_24", "blitz_duo", "close_duo", "bling_duos"];
-    CONST SQUAD_MODES = ["defaultsquad", "defaultsquads", "bots_defaultsquad", "bots_defaultsquads", "highexplosives_squads", "slide_squads", "deimos_squad_winter", "shutdownalt_squads", "sneaky_quads", "flyexplosives_quads", "snipers_quads", "comp_quads", "ww_quads", "bounty_quads", "low_quads","goose_quads_24","blitz_squad", "close_squad", "bling_squads"];
-
     /**
      * Constructs a new Fortnite\Stats instance.
      * @param string $access_token OAuth2 Access token
@@ -99,15 +95,23 @@ class Stats {
     }
 
     /**
-     * Lookup by the User account ID 
+     * Lookup by the User nickname 
      *
-     * @param string $account_id 
+     * @param string $nickname
      */
-    public function lookup($account_id) 
+    public function lookup($nickname) 
     {
+        try {
+            $endpoint = FortniteClient::FORTNITE_PERSONA_API . 'public/account/displayName/' . $nickname;
+            $data = FortniteClient::sendFortniteGetRequest($endpoint, $this->access_token);
+        } catch(\Exception $e) {
+            throw new UserNotFoundException("Cannot find user. Check if the  nickname correct.");
+        }
+
         return new self(
             $this->access_token, 
-            $account_id
+            $data->id,
+            $this->display_name = $nickname
         );
     }
 
@@ -139,17 +143,17 @@ class Stats {
         $platform = $pieces[2]; // either gamepad or touch
         $gamemode = $splitted[1]; // fetch the wole 
         
-        if(!in_array($gamemode, self::SOLO_MODES) && !in_array($gamemode, self::DUO_MODES) && !in_array($gamemode, self::SQUAD_MODES)) {
+        if(!in_array($gamemode, Mode::SOLO_MODES) && !in_array($gamemode, Mode::DUO_MODES) && !in_array($gamemode, Mode::SQUAD_MODES)) {
             return [];
         }
 
         $mode = "";
 
         switch($gamemode) {
-            case in_array($gamemode, self::DUO_MODES):
+            case in_array($gamemode, Mode::DUO_MODES):
                 $mode = "duo";
                 break;
-            case in_array($gamemode, self::SQUAD_MODES):
+            case in_array($gamemode, Mode::SQUAD_MODES):
                 $mode = "squad";
                 break;
             default:
@@ -167,39 +171,4 @@ class Stats {
             'value' => $value
         ];
     }
-
-    /** 
-     * NOTE (18/02/2020): 
-     *
-     * The Lookup API Endpoint got deprecated in 02/20 - so that one can't be used any more. 
-     * The Fetch stats was expanded in order to cover the correspoding exceptions * 
-     */
-
-    /**
-     * Lookup a user by their Epic display name.
-     * @param  string $username Display name to search
-     * @return object           New instance of Fortnite\Stats
-     */
-    /* public function lookup($username) {
-        try {
-            $data = FortniteClient::sendFortniteGetRequest(FortniteClient::FORTNITE_PERSONA_API . 'public/account/lookup?q=' . urlencode($username),
-                                                        $this->access_token);
-            return new self($this->access_token, $data->id);
-        } catch (GuzzleException $e) {
-            if ($e->getResponse()->getStatusCode() == 404) throw new UserNotFoundException('User ' . $username . ' was not found.');
-            throw $e; //If we didn't get the user not found status code, just re-throw the error.
-        }
-    }
-
-    //TODO (Tustin): Make this not redundant
-    public static function lookupWithToken($username, $access_token) {
-        try {
-            $data = FortniteClient::sendFortniteGetRequest(FortniteClient::FORTNITE_PERSONA_API . 'public/account/lookup?q=' . urlencode($username),
-                                                        $access_token);
-            return new self($access_token, $data->id);
-        } catch (GuzzleException $e) {
-            if ($e->getResponse()->getStatusCode() == 404) throw new UserNotFoundException('User ' . $username . ' was not found.');
-            throw $e; //If we didn't get the user not found status code, just re-throw the error.
-        }
-    } */
 }
